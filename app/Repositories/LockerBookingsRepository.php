@@ -115,21 +115,21 @@ class LockerBookingsRepository
     {
         try {
             DB::beginTransaction();
-            // $existingBooking = BookingSchedule::where([
-            //     'locker_station_id' => $request->locker_station_id,
-            //     'locker_id' => $request->locker_id,
-            //     'time_slot_id' => $request->time_slot_id,
-            //     'booking_date' => $request->date,
-            //     'status' => BookingSchedule::STATUS_ACTIVE
-            // ])->first();
+            $existingBooking = BookingSchedule::where([
+                'locker_station_id' => $request->locker_station_id,
+                'locker_id' => $request->locker_id,
+                'time_slot_id' => $request->time_slot_id,
+                'booking_date' => $request->date,
+                'status' => BookingSchedule::STATUS_ACTIVE
+            ])->first();
 
-            // if ($existingBooking) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'data' => [],
-            //         'message' => 'Already booked.',
-            //     ], 409);
-            // }
+            if ($existingBooking) {
+                return response()->json([
+                    'success' => false,
+                    'data' => [],
+                    'message' => 'Already booked.',
+                ], 409);
+            }
 
             $booking = BookingSchedule::create([
                 'locker_station_id' => $request->locker_station_id,
